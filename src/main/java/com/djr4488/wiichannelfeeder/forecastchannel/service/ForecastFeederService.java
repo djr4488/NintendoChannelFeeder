@@ -2,6 +2,8 @@ package com.djr4488.wiichannelfeeder.forecastchannel.service;
 
 import org.slf4j.Logger;
 import javax.ejb.Schedule;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.File;
@@ -10,11 +12,9 @@ import java.io.File;
  * djr4488
  * Service to get forecast data and build forecast files as required by Wii Forecast channel
  *
- *
- * Scheduler won't work until moved into its own class and making it @StartUp @Singleton
- *
  */
-@ApplicationScoped
+@Startup
+@Singleton
 public class ForecastFeederService {
 	@Inject
 	private Logger log;
