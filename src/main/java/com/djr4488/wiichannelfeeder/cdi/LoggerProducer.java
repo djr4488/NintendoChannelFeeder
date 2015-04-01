@@ -33,7 +33,7 @@ public class LoggerProducer {
 			JoranConfigurator configurator = new JoranConfigurator();
 			configurator.setContext(context);
 			context.reset();
-			configurator.doConfigure("/app/spelling/conf/logback.xml");
+			configurator.doConfigure("/app/channels/conf/logback.xml");
 		} catch (JoranException je) {
 			// StatusPrinter will handle this
 		}
