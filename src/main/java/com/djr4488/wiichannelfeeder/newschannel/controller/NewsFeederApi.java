@@ -12,7 +12,7 @@ import java.io.File;
 
 /**
  * djr4488
- * Api to handle ForecastFileRequest
+ * Api to handle NewsFileRequest
  * Will eventually generate and feed files to Wii News Channel
  */
 @ApplicationScoped
@@ -27,7 +27,7 @@ public class NewsFeederApi {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response handleNewsFileRequest(@PathParam("region") String region,
 	                                      @PathParam("file") String file, @Context HttpServletRequest request) {
-		log.info("handleForecastFileRequest() app:Forecast Channel, region:{}, file:{}, requestURL:{}, reqeustPath:{}, requestIP:{}",
+		log.info("handleNewsFileRequest() app:News Channel, region:{}, file:{}, requestURL:{}, reqeustPath:{}, requestIP:{}",
 				region, file, request.getRequestURL(), request.getContextPath(), request.getRemoteUser());
 		Response response;
 		File newsBinFile = new File("c:/app/wiichannels/news/"+file);
