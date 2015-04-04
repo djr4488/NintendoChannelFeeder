@@ -27,7 +27,7 @@ public class ForecastFeederApi {
 	public Response handleForecastFileRequest(@PathParam("region") String region,
 	                                          @PathParam("file") String file, @Context HttpServletRequest request) {
 		log.info("handleForecastFileRequest() app:Forecast Channel, region:{}, file:{}, requestURL:{}," +
-				"requestIP:{}", region, file, request.getRequestURL(), request.getRemoteUser());
+				"requestIP:{}", region, file, request.getRequestURL(), request.getRemoteAddr());
 		Response response;
 		if (file.equals("forecast.bin")) {
 			File forecastBinFile = new File("c:/app/wiichannels/forecast.bin");

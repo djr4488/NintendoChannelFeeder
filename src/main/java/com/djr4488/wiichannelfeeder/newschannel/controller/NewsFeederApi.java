@@ -27,8 +27,8 @@ public class NewsFeederApi {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response handleNewsFileRequest(@PathParam("region") String region,
 	                                      @PathParam("file") String file, @Context HttpServletRequest request) {
-		log.info("handleNewsFileRequest() app:News Channel, region:{}, file:{}, requestURL:{}, reqeustPath:{}, requestIP:{}",
-				region, file, request.getRequestURL(), request.getContextPath(), request.getRemoteUser());
+		log.info("handleNewsFileRequest() app:News Channel, region:{}, file:{}, requestURL:{}," +
+				"requestIP:{}", region, file, request.getRequestURL(), request.getRemoteAddr());
 		Response response;
 		File newsBinFile = new File("c:/app/wiichannels/news/"+file);
 		response = Response.status(Response.Status.OK).entity(newsBinFile).build();
