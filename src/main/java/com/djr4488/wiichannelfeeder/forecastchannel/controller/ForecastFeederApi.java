@@ -1,12 +1,17 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.controller;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.ForecastFeederService;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.slf4j.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.File;
 
@@ -19,23 +24,18 @@ import java.io.File;
 public class ForecastFeederApi {
 	@Inject
 	private Logger log;
+	@Inject
+	private ForecastFeederService forecastFeederService;
 
 	@Path("{region}/{file}")
 	@GET
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response handleForecastFileRequest(@PathParam("region") String region,
-	                                          @PathParam("file") String file, @Context HttpServletRequest request) {
+	public File handleForecastFileRequest(@PathParam("region") String region,
+	                                          @PathParam("file") String file, @Context HttpServletRequest request,
+	                                          @Context HttpServletResponse response) {
 		log.info("handleForecastFileRequest() app:Forecast Channel, region:{}, file:{}, requestURL:{}," +
 				"requestIP:{}", region, file, request.getRequestURL(), request.getRemoteAddr());
-		Response response;
-		if (file.equals("forecast.bin")) {
-			File forecastBinFile = new File("c:/app/wiichannels/forecast.bin");
-			response = Response.status(Response.Status.OK).entity(forecastBinFile).build();
-		} else {
-			File shortBinFile = new File("c:/app/wiichannels/short.bin");
-			response = Response.status(Response.Status.OK).entity(shortBinFile).build();
-		}
-		return response;
+		return forecastFeederService.getForecastFile(region, file);
 	}
 }

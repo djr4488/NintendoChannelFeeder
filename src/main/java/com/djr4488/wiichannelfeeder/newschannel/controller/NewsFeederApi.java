@@ -1,13 +1,14 @@
 package com.djr4488.wiichannelfeeder.newschannel.controller;
 
+import com.djr4488.wiichannelfeeder.newschannel.service.NewsFeederService;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.slf4j.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.io.File;
 
 /**
@@ -20,18 +21,17 @@ import java.io.File;
 public class NewsFeederApi {
 	@Inject
 	private Logger log;
+	@Inject
+	private NewsFeederService newsFeederService;
 
 	@Path("{region}/{file}")
 	@GET
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response handleNewsFileRequest(@PathParam("region") String region,
+	public File handleNewsFileRequest(@PathParam("region") String region,
 	                                      @PathParam("file") String file, @Context HttpServletRequest request) {
 		log.info("handleNewsFileRequest() app:News Channel, region:{}, file:{}, requestURL:{}," +
 				"requestIP:{}", region, file, request.getRequestURL(), request.getRemoteAddr());
-		Response response;
-		File newsBinFile = new File("c:/app/wiichannels/news/"+file);
-		response = Response.status(Response.Status.OK).entity(newsBinFile).build();
-		return response;
+		return newsFeederService.getNewsFile(file);
 	}
 }
