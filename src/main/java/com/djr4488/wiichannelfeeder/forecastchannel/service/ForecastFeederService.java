@@ -9,6 +9,10 @@ import java.io.File;
 /**
  * djr4488
  * Service to get forecast data and build forecast files as required by Wii Forecast channel
+ *
+ *
+ * Scheduler won't work until moved into its own class and making it @StartUp @Singleton
+ *
  */
 @ApplicationScoped
 public class ForecastFeederService {

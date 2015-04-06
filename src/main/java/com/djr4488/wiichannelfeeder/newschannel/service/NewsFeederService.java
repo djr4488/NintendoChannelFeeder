@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import java.io.File;
 
 /**
- * Created by IMac on 3/31/2015.
+ * Scheduler won't work until moved into its own class and making it @StartUp @Singleton
  */
 @ApplicationScoped
 public class NewsFeederService {
