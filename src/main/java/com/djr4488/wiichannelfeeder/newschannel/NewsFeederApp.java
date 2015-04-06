@@ -2,6 +2,7 @@ package com.djr4488.wiichannelfeeder.newschannel;
 
 import com.djr4488.wiichannelfeeder.newschannel.controller.NewsFeederApi;
 import com.djr4488.wiichannelfeeder.newschannel.exceptionmapper.NewsFeederExceptionMapper;
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.Set;
  * application to feed data to Wii starved News Channel
  *
  */
+@ApplicationScoped
 @ApplicationPath("v2")
 public class NewsFeederApp extends Application {
 	@Override

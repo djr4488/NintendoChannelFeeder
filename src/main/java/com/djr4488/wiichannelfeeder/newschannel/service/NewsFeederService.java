@@ -2,12 +2,14 @@ package com.djr4488.wiichannelfeeder.newschannel.service;
 
 import org.slf4j.Logger;
 import javax.ejb.Schedule;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.File;
 
 /**
  * Created by IMac on 3/31/2015.
  */
+@ApplicationScoped
 public class NewsFeederService {
 	@Inject
 	private Logger log;
