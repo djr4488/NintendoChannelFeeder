@@ -34,3 +34,9 @@ How to run this?
 
 I am using TomEE.  But there shouldn't be any reason to set this up and run it using any other container like Glassfish or Wildfly.
 
+How can you help?
+-----------------
+
+Know someone who works at Nintendo who can legally provide information about the file formats for the channels and legally share the RSA key to sign the files with?  Well that would be great!
+
+Beyond that, helping to figure this stuff out by hand would be a plus as well.
