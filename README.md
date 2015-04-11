@@ -48,7 +48,7 @@ It wasn't used much by many people I am sure, which is probably what prompted Ni
 
 I'd still like to do use this as a way to spark their imagination in things like science(forecast channel works for that), news and politics(and the news channel worked for that), and opinions.
 
-Why did these channels work so well?  They were simple, colorful, and entertaining for them, and so preserving their functionality seems to be important to me.  So if you want to help fork the project and contribute.
+Why did these channels work so well?  They were simple, colorful, and entertaining for them, and so preserving their functionality is important to me.  So if you want to help fork the project and contribute.
 
 If you work at Nintendo, well that would be cool as well if you can help.
 

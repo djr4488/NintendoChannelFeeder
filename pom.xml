@@ -177,6 +177,12 @@
             <version>1.0.13</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.18</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
