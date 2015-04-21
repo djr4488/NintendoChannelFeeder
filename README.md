@@ -52,6 +52,11 @@ Why did these channels work so well?  They were simple, colorful, and entertaini
 
 If you work at Nintendo, well that would be cool as well if you can help.
 
+Other info
+----------
+
+https://github.com/djr4488/NintendoChannelFeeder/wiki/Extra-Information
+
 Questions?
 ----------
 
