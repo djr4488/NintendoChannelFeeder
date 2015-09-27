@@ -24,15 +24,11 @@
 
         var group = new THREE.Object3D();
 
-
-        scene.add(new THREE.AmbientLight(0x333333));
-
-        var ambientLight = new THREE.AmbientLight(0xFFFF99);
-        scene.add(ambientLight);
-
-        var light = new THREE.PointLight(0xFFFFFF, 1, 0);
-        light.position.set(0, 0, 0);
-        scene.add(light);
+        var ambientLight	= new THREE.AmbientLight( 0x888888 );
+        scene.add( ambientLight );
+        var light	= new THREE.DirectionalLight( 0xcccccc, 1 );
+        light.position.set(20,12,20);
+        scene.add( light );
 
         THREE.ImageUtils.crossOrigin = 'anonymous';
 
