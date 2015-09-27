@@ -51,9 +51,9 @@
         var earth = new THREE.Mesh(geometry, material);
         //earth.rotation.z = 23.439281 * Math.PI / 180;
         group.add(earth);
-        scene.add(group)
+        scene.add(group);
 
-        var geometryStarField  = new THREE.SphereGeometry(90, 128, 128);
+        var geometryStarField  = new THREE.SphereGeometry(90, 32, 32);
         var materialStarField  = new THREE.MeshBasicMaterial();
         materialStarField.map   = THREE.ImageUtils.loadTexture('images/starfield.jpg') ;
         materialStarField.side  = THREE.BackSide;
