@@ -27,7 +27,7 @@ public class ForecastFeederService {
 	@Inject
 	private DarkskyTransport darkskyTransport;
 	//todo setup inject using a config service
-	private String key = "dd967c4cb038d11be6bc2c8dbeb05136";
+	private String key = "my key";
 
 	@Schedule(second="0", minute="0/1", hour="*")
 	public void getUpdatedForecastsByRegions() {
