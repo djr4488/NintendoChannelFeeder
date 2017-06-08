@@ -3,7 +3,6 @@ package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class DarkskyResponse {
     private String latitude;
     private String longitude;

@@ -1,7 +1,12 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service;
 
+import com.djr4488.wiichannelfeeder.errorhandling.ErrorHandlingCall;
+import com.djr4488.wiichannelfeeder.errorhandling.ErrorHandlingCallback;
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyResponse;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyTransport;
 import org.slf4j.Logger;
+import retrofit2.Response;
+
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -22,18 +27,47 @@ public class ForecastFeederService {
 	@Inject
 	private DarkskyTransport darkskyTransport;
 	//todo setup inject using a config service
-	private String key;
+	private String key = "dd967c4cb038d11be6bc2c8dbeb05136";
 
 	@Schedule(second="0", minute="0/1", hour="*")
 	public void getUpdatedForecastsByRegions() {
 		log.info("getUpdateForecastByRegions() started");
-		String darkskyJsonAsString = null;
-		try {
-			darkskyJsonAsString = darkskyTransport.getForecast(key, "38.881396", "-94.819128").execute().body().string();
-		} catch (IOException ioEx) {
-			log.error("getUpdateForecastsByRegions() error", ioEx);
-		}
-		log.info("getUpdateForecastByRegions() completed with darkskyJsonAsString:{}", darkskyJsonAsString);
+		darkskyTransport.getForecast(key, "38.881396", "-94.819128").enqueue(
+			new ErrorHandlingCallback<DarkskyResponse>() {
+				DarkskyResponse darkskyJsonAsString;
+				@Override
+				public void success(Response<DarkskyResponse> response) {
+					System.out.println("SUCCESS!!!! " + response.body().toString());
+					darkskyJsonAsString = response.body();
+					log.debug("darkskyJsonAsString:{}", darkskyJsonAsString);
+				}
+
+				@Override
+				public void unauthenticated(Response<?> response) {
+					System.out.println("Not authenticated");
+				}
+
+				@Override
+				public void clientError(Response<?> response) {
+					System.out.println("Client Error " + response.code() + " " + response.message());
+				}
+
+				@Override
+				public void serverError(Response<?> response) {
+					System.out.println("Server Error " + response.code() + " " + response.message());
+				}
+
+				@Override
+				public void networkError(IOException e) {
+					System.err.println("Network Error " + e.getMessage());
+				}
+
+				@Override
+				public void unexpectedError(Throwable t) {
+					System.err.println("Fatal Error " + t.getMessage());
+				}
+			}
+		);  // end getForecast
 	}
 
 	public File getForecastFile(String region, String file) {

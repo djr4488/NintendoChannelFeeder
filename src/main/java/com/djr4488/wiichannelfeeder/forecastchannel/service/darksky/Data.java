@@ -1,16 +1,15 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
-import java.util.Date;
-import java.util.List;
+import java.util.TimeZone;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Data {
-    private DateTime time;
+    private Long time;
     private String summary;
     private String icon;
     private Float precipIntensity;
@@ -40,11 +39,15 @@ public class Data {
     private Float apparentTempuratureMax;
     private DateTime apparentTempuratureMaxTime;
 
-    public DateTime getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(DateTime time) {
+    public DateTime getDateTime(String timezone) {
+        return DateTime.now().withMillis(time).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone(timezone)));
+    }
+
+    public void setTime(Long time) {
         this.time = time;
     }
 
