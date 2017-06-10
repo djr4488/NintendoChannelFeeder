@@ -11,8 +11,7 @@ import java.util.concurrent.Executor;
 
 public class ErrorHandlingCallAdaptorFactory extends CallAdapter.Factory {
     @Override
-    public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations,
-                                           Retrofit retrofit) {
+    public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
         if (getRawType(returnType) != ErrorHandlingCall.class) {
             return null;
         }
