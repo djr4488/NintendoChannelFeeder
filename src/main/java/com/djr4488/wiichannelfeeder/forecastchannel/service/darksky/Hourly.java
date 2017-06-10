@@ -1,6 +1,5 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

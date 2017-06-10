@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.chrono.ISOChronology;
 
 import java.util.TimeZone;
 
@@ -34,7 +35,7 @@ public class Currently {
     }
 
     public DateTime getDateTime(String timezone) {
-        return DateTime.now().withMillis(time).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone(timezone)));
+        return new DateTime(time * 1000, ISOChronology.getInstanceUTC()).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone(timezone)));
     }
 
     public void setTime(Long time) {

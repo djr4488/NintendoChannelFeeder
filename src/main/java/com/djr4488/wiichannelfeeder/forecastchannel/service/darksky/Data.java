@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.chrono.ISOChronology;
 
 import java.util.TimeZone;
 
@@ -44,7 +45,7 @@ public class Data {
     }
 
     public DateTime getDateTime(String timezone) {
-        return DateTime.now().withMillis(time).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone(timezone)));
+        return new DateTime(time * 1000, ISOChronology.getInstanceUTC()).withZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone(timezone)));
     }
 
     public void setTime(Long time) {
@@ -169,6 +170,110 @@ public class Data {
 
     public void setOzone(Float ozone) {
         this.ozone = ozone;
+    }
+
+    public DateTime getSunriseTime() {
+        return sunriseTime;
+    }
+
+    public void setSunriseTime(DateTime sunriseTime) {
+        this.sunriseTime = sunriseTime;
+    }
+
+    public DateTime getSunsetTime() {
+        return sunsetTime;
+    }
+
+    public void setSunsetTime(DateTime sunsetTime) {
+        this.sunsetTime = sunsetTime;
+    }
+
+    public Float getMoonPhase() {
+        return moonPhase;
+    }
+
+    public void setMoonPhase(Float moonPhase) {
+        this.moonPhase = moonPhase;
+    }
+
+    public Float getPrecipIntensityMax() {
+        return precipIntensityMax;
+    }
+
+    public void setPrecipIntensityMax(Float precipIntensityMax) {
+        this.precipIntensityMax = precipIntensityMax;
+    }
+
+    public DateTime getPrecipIntensityMaxTime() {
+        return precipIntensityMaxTime;
+    }
+
+    public void setPrecipIntensityMaxTime(DateTime precipIntensityMaxTime) {
+        this.precipIntensityMaxTime = precipIntensityMaxTime;
+    }
+
+    public Float getTemperatureMin() {
+        return temperatureMin;
+    }
+
+    public void setTemperatureMin(Float temperatureMin) {
+        this.temperatureMin = temperatureMin;
+    }
+
+    public DateTime getTemperatureMinTime() {
+        return temperatureMinTime;
+    }
+
+    public void setTemperatureMinTime(DateTime temperatureMinTime) {
+        this.temperatureMinTime = temperatureMinTime;
+    }
+
+    public Float getTemperatureMax() {
+        return temperatureMax;
+    }
+
+    public void setTemperatureMax(Float temperatureMax) {
+        this.temperatureMax = temperatureMax;
+    }
+
+    public DateTime getTemperatureMaxTime() {
+        return temperatureMaxTime;
+    }
+
+    public void setTemperatureMaxTime(DateTime temperatureMaxTime) {
+        this.temperatureMaxTime = temperatureMaxTime;
+    }
+
+    public Float getApparentTempuratureMin() {
+        return apparentTempuratureMin;
+    }
+
+    public void setApparentTempuratureMin(Float apparentTempuratureMin) {
+        this.apparentTempuratureMin = apparentTempuratureMin;
+    }
+
+    public DateTime getApparentTemperatureMinTime() {
+        return apparentTemperatureMinTime;
+    }
+
+    public void setApparentTemperatureMinTime(DateTime apparentTemperatureMinTime) {
+        this.apparentTemperatureMinTime = apparentTemperatureMinTime;
+    }
+
+    public Float getApparentTempuratureMax() {
+        return apparentTempuratureMax;
+    }
+
+    public void setApparentTempuratureMax(Float apparentTempuratureMax) {
+        this.apparentTempuratureMax = apparentTempuratureMax;
+    }
+
+    public DateTime getApparentTempuratureMaxTime() {
+        return apparentTempuratureMaxTime;
+    }
+
+    public void setApparentTempuratureMaxTime(DateTime apparentTempuratureMaxTime) {
+        this.apparentTempuratureMaxTime = apparentTempuratureMaxTime;
     }
 
     @Override

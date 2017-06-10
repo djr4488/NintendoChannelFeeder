@@ -1,4 +1,4 @@
-package com.djr4488.wiichannelfeeder.forecastchannel.service;
+package com.djr4488.wiichannelfeeder.forecastchannel;
 
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyCallback;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyResponse;
@@ -20,7 +20,7 @@ import java.io.File;
  */
 @Startup
 @Singleton
-public class ForecastFeederService {
+public class ForecastFeederController {
 	@Inject
 	private Logger log;
 	@Inject
@@ -28,7 +28,7 @@ public class ForecastFeederService {
 	@Inject
 	private DarkskyCallback darkskyCallback;
 	//todo setup inject using a config service
-	private String key = "darksky api key";
+	private String key = "use darksky key here";
 
 	@Schedule(second="0", minute="0/1", hour="*")
 	public void getUpdatedForecastsByRegions() {
