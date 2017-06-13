@@ -1,45 +1,62 @@
-package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
+package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
-import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.CurrentForecast;
-import com.djr4488.wiichannelfeeder.utils.ConversionUtils;
-import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
-public class Currently {
-    private Long time;
+/**
+ * Created by djr4488 on 6/10/17.
+ */
+@Entity
+@Table(name = "hourly_data_entries")
+public class HourlyData {
+    @Column(name = "time")
+    private DateTime time;
+    @Column(name = "summary")
     private String summary;
+    @Column(name = "icon")
     private String icon;
-    private BigDecimal nearestStormDistance;
-    private BigDecimal nearestStormBearing;
+    @Column(name = "precip_intensity", precision = 7, scale = 3)
     private BigDecimal precipIntensity;
-    private BigDecimal precipIntensityError;
+    @Column(name = "precip_probability", precision = 7, scale = 3)
     private BigDecimal precipProbability;
     private String precipType;
-    private BigDecimal precipTemperature;
+    @Column(name = "temperature", precision = 7, scale = 3)
     private BigDecimal temperature;
-    private BigDecimal apparentTemperature;
-    private BigDecimal dewPoint;
+    @Column(name = "apparent_temperature", precision = 7, scale = 3)
+    private BigDecimal apparentTempurature;
+    @Column(name = "dewpoint", precision = 7, scale = 3)
+    private BigDecimal dew_point;
+    @Column(name = "humidity", precision = 7, scale = 3)
     private BigDecimal humidity;
+    @Column(name = "wind_speed", precision = 7, scale = 3)
     private BigDecimal windSpeed;
-    private BigDecimal windBearing;
+    @Column(name = "wind_bearing")
+    private Integer windBearing;
+    @Column(name = "visibility", precision = 7, scale = 3)
     private BigDecimal visibility;
+    @Column(name = "cloud_cover", precision = 7, scale = 3)
     private BigDecimal cloudCover;
+    @Column(name = "pressure", precision = 7, scale = 3)
     private BigDecimal pressure;
+    @Column(name = "ozone", precision = 7, scale = 3)
     private BigDecimal ozone;
+    @ManyToOne
+    @JoinColumn(name = "hourly_id")
+    private HourlyForecast hourlyForecast;
 
-    public Long getTime() {
+    public DateTime getTime() {
         return time;
     }
 
-    public DateTime getDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getTime(), timezone);
-    }
-
-    public void setTime(Long time) {
+    public void setTime(DateTime time) {
         this.time = time;
     }
 
@@ -59,36 +76,12 @@ public class Currently {
         this.icon = icon;
     }
 
-    public BigDecimal getNearestStormDistance() {
-        return nearestStormDistance;
-    }
-
-    public void setNearestStormDistance(BigDecimal nearestStormDistance) {
-        this.nearestStormDistance = nearestStormDistance;
-    }
-
-    public BigDecimal getNearestStormBearing() {
-        return nearestStormBearing;
-    }
-
-    public void setNearestStormBearing(BigDecimal nearestStormBearing) {
-        this.nearestStormBearing = nearestStormBearing;
-    }
-
     public BigDecimal getPrecipIntensity() {
         return precipIntensity;
     }
 
     public void setPrecipIntensity(BigDecimal precipIntensity) {
         this.precipIntensity = precipIntensity;
-    }
-
-    public BigDecimal getPrecipIntensityError() {
-        return precipIntensityError;
-    }
-
-    public void setPrecipIntensityError(BigDecimal precipIntensityError) {
-        this.precipIntensityError = precipIntensityError;
     }
 
     public BigDecimal getPrecipProbability() {
@@ -107,14 +100,6 @@ public class Currently {
         this.precipType = precipType;
     }
 
-    public BigDecimal getPrecipTemperature() {
-        return precipTemperature;
-    }
-
-    public void setPrecipTemperature(BigDecimal precipTemperature) {
-        this.precipTemperature = precipTemperature;
-    }
-
     public BigDecimal getTemperature() {
         return temperature;
     }
@@ -123,20 +108,20 @@ public class Currently {
         this.temperature = temperature;
     }
 
-    public BigDecimal getApparentTemperature() {
-        return apparentTemperature;
+    public BigDecimal getApparentTempurature() {
+        return apparentTempurature;
     }
 
-    public void setApparentTemperature(BigDecimal apparentTemperature) {
-        this.apparentTemperature = apparentTemperature;
+    public void setApparentTempurature(BigDecimal apparentTempurature) {
+        this.apparentTempurature = apparentTempurature;
     }
 
-    public BigDecimal getDewPoint() {
-        return dewPoint;
+    public BigDecimal getDew_point() {
+        return dew_point;
     }
 
-    public void setDewPoint(BigDecimal dewPoint) {
-        this.dewPoint = dewPoint;
+    public void setDew_point(BigDecimal dew_point) {
+        this.dew_point = dew_point;
     }
 
     public BigDecimal getHumidity() {
@@ -155,11 +140,11 @@ public class Currently {
         this.windSpeed = windSpeed;
     }
 
-    public BigDecimal getWindBearing() {
+    public Integer getWindBearing() {
         return windBearing;
     }
 
-    public void setWindBearing(BigDecimal windBearing) {
+    public void setWindBearing(Integer windBearing) {
         this.windBearing = windBearing;
     }
 
@@ -195,13 +180,16 @@ public class Currently {
         this.ozone = ozone;
     }
 
-    public CurrentForecast toCurrently() {
-        return CopyUtils.copyProperties(this,
-                new CurrentForecast());
+    public HourlyForecast getHourlyForecast() {
+        return hourlyForecast;
+    }
+
+    public void setHourlyForecast(HourlyForecast hourlyForecast) {
+        this.hourlyForecast = hourlyForecast;
     }
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

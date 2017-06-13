@@ -3,6 +3,8 @@ package com.djr4488.wiichannelfeeder.forecastchannel;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyCallback;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyResponse;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyTransport;
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.ForecastStoreService;
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Location;
 import org.slf4j.Logger;
 
 import javax.ejb.Schedule;
@@ -27,8 +29,11 @@ public class ForecastFeederController {
 	private DarkskyTransport darkskyTransport;
 	@Inject
 	private DarkskyCallback darkskyCallback;
+	@Inject
+	private ForecastStoreService forecastStoreService;
+
 	//todo setup inject using a config service
-	private String key = "use darksky key here";
+	private String key = "96701672aeed78de6f2dc712c9f4c33f";
 
 	@Schedule(second="0", minute="0/1", hour="*")
 	public void getUpdatedForecastsByRegions() {
@@ -45,5 +50,7 @@ public class ForecastFeederController {
 
 	public void darkskyResponseListener(@Observes DarkskyResponse darkskyResponse) {
 		log.debug("darkskyResponseListener() darkskyResponse:{}", darkskyResponse);
+		Location location = darkskyResponse.toLocation();
+		//TODO call forecast store service to save data to database
 	}
 }

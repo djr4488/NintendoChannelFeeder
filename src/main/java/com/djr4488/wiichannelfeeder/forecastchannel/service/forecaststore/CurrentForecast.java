@@ -1,42 +1,68 @@
-package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
+package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
-import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.CurrentForecast;
-import com.djr4488.wiichannelfeeder.utils.ConversionUtils;
-import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.joda.time.DateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
-public class Currently {
+/**
+ * Created by djr4488 on 6/9/17.
+ */
+@Entity
+@Table(name = "current_forecasts")
+public class CurrentForecast extends Identifiable {
+    @Column(name = "time")
     private Long time;
+    @Column(name = "summary")
     private String summary;
+    @Column(name = "icon")
     private String icon;
+    @Column(name = "nearest_storm_distance")
     private BigDecimal nearestStormDistance;
+    @Column(name = "neareset_storm_bearing")
     private BigDecimal nearestStormBearing;
+    @Column(name = "precip_intensity")
     private BigDecimal precipIntensity;
+    @Column(name = "precip_intensity_error")
     private BigDecimal precipIntensityError;
+    @Column(name = "precip_probability")
     private BigDecimal precipProbability;
+    @Column(name = "precip_type")
     private String precipType;
+    @Column(name = "precip_temperature")
     private BigDecimal precipTemperature;
+    @Column(name = "temperature")
     private BigDecimal temperature;
+    @Column(name = "apparent_temperature")
     private BigDecimal apparentTemperature;
+    @Column(name = "dew_point")
     private BigDecimal dewPoint;
+    @Column(name = "humidity")
     private BigDecimal humidity;
+    @Column(name = "wind_speed")
     private BigDecimal windSpeed;
+    @Column(name = "wind_bearing")
     private BigDecimal windBearing;
+    @Column(name = "visibitiliy")
     private BigDecimal visibility;
+    @Column(name = "cloud_cover")
     private BigDecimal cloudCover;
+    @Column(name = "pressure")
     private BigDecimal pressure;
+    @Column(name = "ozone")
     private BigDecimal ozone;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     public Long getTime() {
         return time;
-    }
-
-    public DateTime getDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getTime(), timezone);
     }
 
     public void setTime(Long time) {
@@ -195,13 +221,16 @@ public class Currently {
         this.ozone = ozone;
     }
 
-    public CurrentForecast toCurrently() {
-        return CopyUtils.copyProperties(this,
-                new CurrentForecast());
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

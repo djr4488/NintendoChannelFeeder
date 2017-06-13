@@ -1,52 +1,87 @@
-package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
+package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
-import com.djr4488.wiichannelfeeder.utils.ConversionUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
-public class Data {
-    private Long time;
+/**
+ * Created by djr4488 on 6/11/17.
+ */
+@Entity
+@Table(name = "daily_data_entries")
+public class DailyData {
+    @Column(name = "time")
+    private DateTime time;
+    @Column(name = "summary")
     private String summary;
+    @Column(name = "icon")
     private String icon;
+    @Column(name = "precip_intensity", precision = 7, scale = 3)
     private BigDecimal precipIntensity;
+    @Column(name = "precip_probability", precision = 7, scale = 3)
     private BigDecimal precipProbability;
     private String precipType;
+    @Column(name = "temperature", precision = 7, scale = 3)
     private BigDecimal temperature;
-    private BigDecimal apparentTempurature;
-    private BigDecimal dewPoint;
+    @Column(name = "dewpoint", precision = 7, scale = 3)
+    private BigDecimal dew_point;
+    @Column(name = "humidity", precision = 7, scale = 3)
     private BigDecimal humidity;
+    @Column(name = "wind_speed", precision = 7, scale = 3)
     private BigDecimal windSpeed;
+    @Column(name = "wind_bearing")
     private Integer windBearing;
+    @Column(name = "visibility", precision = 7, scale = 3)
     private BigDecimal visibility;
+    @Column(name = "cloud_cover", precision = 7, scale = 3)
     private BigDecimal cloudCover;
+    @Column(name = "pressure", precision = 7, scale = 3)
     private BigDecimal pressure;
+    @Column(name = "ozone", precision = 7, scale = 3)
     private BigDecimal ozone;
-    private Long sunriseTime;
-    private Long sunsetTime;
+    @Column(name = "sunrise_time")
+    private DateTime sunriseTime;
+    @Column(name = "sunset_time")
+    private DateTime sunsetTime;
+    @Column(name = "moon_phase", precision = 7, scale = 3)
     private BigDecimal moonPhase;
+    @Column(name = "precip_intensity_max", precision = 7, scale = 3)
     private BigDecimal precipIntensityMax;
-    private Long precipIntensityMaxTime;
+    @Column(name = "precip_intensity_max_time")
+    private DateTime precipIntensityMaxTime;
+    @Column(name = "temperature_min", precision = 7, scale = 3)
     private BigDecimal temperatureMin;
-    private Long temperatureMinTime;
+    @Column(name = "temperature_min_time")
+    private DateTime temperatureMinTime;
+    @Column(name = "temperature_max", precision = 7, scale = 3)
     private BigDecimal temperatureMax;
-    private Long temperatureMaxTime;
+    @Column(name = "temperature_max_time")
+    private DateTime temperatureMaxTime;
+    @Column(name = "apparent_temperature_min", precision = 7, scale = 3)
     private BigDecimal apparentTempuratureMin;
-    private Long apparentTemperatureMinTime;
+    @Column(name = "apparent_temperature_min_time")
+    private DateTime apparentTemperatureMinTime;
+    @Column(name = "apparent_temperature_max", precision = 7, scale = 3)
     private BigDecimal apparentTempuratureMax;
-    private Long apparentTempuratureMaxTime;
+    @Column(name = "apparent_temperature_max_time")
+    private DateTime apparentTempuratureMaxTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "daily_id")
+    private DailyForecast dailyForecast;
 
-    public Long getTime() {
+    public DateTime getTime() {
         return time;
     }
 
-    public DateTime getDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(time, timezone);
-    }
-
-    public void setTime(Long time) {
+    public void setTime(DateTime time) {
         this.time = time;
     }
 
@@ -98,20 +133,12 @@ public class Data {
         this.temperature = temperature;
     }
 
-    public BigDecimal getApparentTempurature() {
-        return apparentTempurature;
+    public BigDecimal getDew_point() {
+        return dew_point;
     }
 
-    public void setApparentTempurature(BigDecimal apparentTempurature) {
-        this.apparentTempurature = apparentTempurature;
-    }
-
-    public BigDecimal getDewPoint() {
-        return dewPoint;
-    }
-
-    public void setDewPoint(BigDecimal dewPoint) {
-        this.dewPoint = dewPoint;
+    public void setDew_point(BigDecimal dew_point) {
+        this.dew_point = dew_point;
     }
 
     public BigDecimal getHumidity() {
@@ -170,28 +197,20 @@ public class Data {
         this.ozone = ozone;
     }
 
-    public Long getSunriseTime() {
+    public DateTime getSunriseTime() {
         return sunriseTime;
     }
 
-    public void setSunriseTime(Long sunriseTime) {
+    public void setSunriseTime(DateTime sunriseTime) {
         this.sunriseTime = sunriseTime;
     }
 
-    public DateTime getSunriseDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getSunriseTime(), timezone);
-    }
-
-    public Long getSunsetTime() {
+    public DateTime getSunsetTime() {
         return sunsetTime;
     }
 
-    public void setSunsetTime(Long sunsetTime) {
+    public void setSunsetTime(DateTime sunsetTime) {
         this.sunsetTime = sunsetTime;
-    }
-
-    public DateTime getSunsetDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getSunsetTime(), timezone);
     }
 
     public BigDecimal getMoonPhase() {
@@ -210,16 +229,12 @@ public class Data {
         this.precipIntensityMax = precipIntensityMax;
     }
 
-    public Long getPrecipIntensityMaxTime() {
+    public DateTime getPrecipIntensityMaxTime() {
         return precipIntensityMaxTime;
     }
 
-    public void setPrecipIntensityMaxTime(Long precipIntensityMaxTime) {
+    public void setPrecipIntensityMaxTime(DateTime precipIntensityMaxTime) {
         this.precipIntensityMaxTime = precipIntensityMaxTime;
-    }
-
-    public DateTime getPrecipIntensityMaxDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getPrecipIntensityMaxTime(), timezone);
     }
 
     public BigDecimal getTemperatureMin() {
@@ -230,16 +245,12 @@ public class Data {
         this.temperatureMin = temperatureMin;
     }
 
-    public Long getTemperatureMinTime() {
+    public DateTime getTemperatureMinTime() {
         return temperatureMinTime;
     }
 
-    public void setTemperatureMinTime(Long temperatureMinTime) {
+    public void setTemperatureMinTime(DateTime temperatureMinTime) {
         this.temperatureMinTime = temperatureMinTime;
-    }
-
-    public DateTime getTemperatureMinDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getTemperatureMinTime(), timezone);
     }
 
     public BigDecimal getTemperatureMax() {
@@ -250,16 +261,12 @@ public class Data {
         this.temperatureMax = temperatureMax;
     }
 
-    public Long getTemperatureMaxTime() {
+    public DateTime getTemperatureMaxTime() {
         return temperatureMaxTime;
     }
 
-    public void setTemperatureMaxTime(Long temperatureMaxTime) {
+    public void setTemperatureMaxTime(DateTime temperatureMaxTime) {
         this.temperatureMaxTime = temperatureMaxTime;
-    }
-
-    public DateTime getTemperatureMaxDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getTemperatureMaxTime(), timezone);
     }
 
     public BigDecimal getApparentTempuratureMin() {
@@ -270,16 +277,12 @@ public class Data {
         this.apparentTempuratureMin = apparentTempuratureMin;
     }
 
-    public Long getApparentTemperatureMinTime() {
+    public DateTime getApparentTemperatureMinTime() {
         return apparentTemperatureMinTime;
     }
 
-    public void setApparentTemperatureMinTime(Long apparentTemperatureMinTime) {
+    public void setApparentTemperatureMinTime(DateTime apparentTemperatureMinTime) {
         this.apparentTemperatureMinTime = apparentTemperatureMinTime;
-    }
-
-    public DateTime getApparentTemperatureMinDateTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getApparentTemperatureMinTime(), timezone);
     }
 
     public BigDecimal getApparentTempuratureMax() {
@@ -290,20 +293,24 @@ public class Data {
         this.apparentTempuratureMax = apparentTempuratureMax;
     }
 
-    public Long getApparentTempuratureMaxTime() {
+    public DateTime getApparentTempuratureMaxTime() {
         return apparentTempuratureMaxTime;
     }
 
-    public void setApparentTempuratureMaxTime(Long apparentTempuratureMaxTime) {
+    public void setApparentTempuratureMaxTime(DateTime apparentTempuratureMaxTime) {
         this.apparentTempuratureMaxTime = apparentTempuratureMaxTime;
     }
 
-    public DateTime getApparentTemperatureMaxTime(String timezone) {
-        return ConversionUtils.convertUnixToDateTime(getApparentTempuratureMaxTime(), timezone);
+    public DailyForecast getDailyForecast() {
+        return dailyForecast;
+    }
+
+    public void setDailyForecast(DailyForecast dailyForecast) {
+        this.dailyForecast = dailyForecast;
     }
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

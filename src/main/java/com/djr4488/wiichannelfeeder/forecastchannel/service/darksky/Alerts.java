@@ -1,24 +1,16 @@
-package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
+package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Created by djr4488 on 6/9/17.
+ * Created by djr4488 on 6/11/17.
  */
-@Entity
-@Table(name = "alert_entries")
-public class Alerts extends Identifiable {
-    @Column(name = "title")
+public class Alerts {
     private String title;
-    @Column(name = "time")
     private Long time;
-    @Column(name = "expires")
     private Long expires;
-    @Column(name = "description", columnDefinition = "BLOB")
     private String description;
-    @Column(name = "uri")
     private String uri;
 
     public String getTitle() {
@@ -59,5 +51,10 @@ public class Alerts extends Identifiable {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

@@ -20,5 +20,7 @@ public class ForecastStoreService {
     @Inject
     private Logger log;
     
-    
+    public void saveForecastForLocation(Location location) {
+        em.persist(location);
+    }
 }
