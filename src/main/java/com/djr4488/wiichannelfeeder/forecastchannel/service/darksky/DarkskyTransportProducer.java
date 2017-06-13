@@ -1,11 +1,9 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
-import com.djr4488.wiichannelfeeder.errorhandling.ErrorHandlingCallAdaptorFactory;
+import com.djr4488.wiichannelfeeder.utils.TransportProducer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -24,12 +22,7 @@ public class DarkskyTransportProducer {
 
     @Produces
     public DarkskyTransport getDarkskyTransport() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addCallAdapterFactory(new ErrorHandlingCallAdaptorFactory())
-                .addConverterFactory(JacksonConverterFactory.create(getObjectMapper()))
-                .build();
-        return retrofit.create(DarkskyTransport.class);
+        return TransportProducer.getTransport(DarkskyTransport.class, getObjectMapper(), baseUrl);
     }
 
     private ObjectMapper getObjectMapper() {

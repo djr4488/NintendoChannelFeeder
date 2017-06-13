@@ -1,5 +1,7 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Alert;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -51,6 +53,10 @@ public class Alerts {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public Alert toAlert() {
+        return CopyUtils.copyProperties(this, new Alert());
     }
 
     @Override

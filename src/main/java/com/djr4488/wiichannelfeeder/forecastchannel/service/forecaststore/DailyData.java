@@ -2,7 +2,6 @@ package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.joda.time.DateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,7 @@ import java.math.BigDecimal;
 @Table(name = "daily_data_entries")
 public class DailyData {
     @Column(name = "time")
-    private DateTime time;
+    private Long time;
     @Column(name = "summary")
     private String summary;
     @Column(name = "icon")
@@ -48,40 +47,40 @@ public class DailyData {
     @Column(name = "ozone", precision = 7, scale = 3)
     private BigDecimal ozone;
     @Column(name = "sunrise_time")
-    private DateTime sunriseTime;
+    private Long sunriseTime;
     @Column(name = "sunset_time")
-    private DateTime sunsetTime;
+    private Long sunsetTime;
     @Column(name = "moon_phase", precision = 7, scale = 3)
     private BigDecimal moonPhase;
     @Column(name = "precip_intensity_max", precision = 7, scale = 3)
     private BigDecimal precipIntensityMax;
     @Column(name = "precip_intensity_max_time")
-    private DateTime precipIntensityMaxTime;
+    private Long precipIntensityMaxTime;
     @Column(name = "temperature_min", precision = 7, scale = 3)
     private BigDecimal temperatureMin;
     @Column(name = "temperature_min_time")
-    private DateTime temperatureMinTime;
+    private Long temperatureMinTime;
     @Column(name = "temperature_max", precision = 7, scale = 3)
     private BigDecimal temperatureMax;
     @Column(name = "temperature_max_time")
-    private DateTime temperatureMaxTime;
+    private Long temperatureMaxTime;
     @Column(name = "apparent_temperature_min", precision = 7, scale = 3)
     private BigDecimal apparentTempuratureMin;
     @Column(name = "apparent_temperature_min_time")
-    private DateTime apparentTemperatureMinTime;
+    private Long apparentTemperatureMinTime;
     @Column(name = "apparent_temperature_max", precision = 7, scale = 3)
     private BigDecimal apparentTempuratureMax;
     @Column(name = "apparent_temperature_max_time")
-    private DateTime apparentTempuratureMaxTime;
+    private Long apparentTempuratureMaxTime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "daily_id")
     private DailyForecast dailyForecast;
 
-    public DateTime getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(DateTime time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
@@ -197,19 +196,19 @@ public class DailyData {
         this.ozone = ozone;
     }
 
-    public DateTime getSunriseTime() {
+    public Long getSunriseTime() {
         return sunriseTime;
     }
 
-    public void setSunriseTime(DateTime sunriseTime) {
+    public void setSunriseTime(Long sunriseTime) {
         this.sunriseTime = sunriseTime;
     }
 
-    public DateTime getSunsetTime() {
+    public Long getSunsetTime() {
         return sunsetTime;
     }
 
-    public void setSunsetTime(DateTime sunsetTime) {
+    public void setSunsetTime(Long sunsetTime) {
         this.sunsetTime = sunsetTime;
     }
 
@@ -229,11 +228,11 @@ public class DailyData {
         this.precipIntensityMax = precipIntensityMax;
     }
 
-    public DateTime getPrecipIntensityMaxTime() {
+    public Long getPrecipIntensityMaxTime() {
         return precipIntensityMaxTime;
     }
 
-    public void setPrecipIntensityMaxTime(DateTime precipIntensityMaxTime) {
+    public void setPrecipIntensityMaxTime(Long precipIntensityMaxTime) {
         this.precipIntensityMaxTime = precipIntensityMaxTime;
     }
 
@@ -245,11 +244,11 @@ public class DailyData {
         this.temperatureMin = temperatureMin;
     }
 
-    public DateTime getTemperatureMinTime() {
+    public Long getTemperatureMinTime() {
         return temperatureMinTime;
     }
 
-    public void setTemperatureMinTime(DateTime temperatureMinTime) {
+    public void setTemperatureMinTime(Long temperatureMinTime) {
         this.temperatureMinTime = temperatureMinTime;
     }
 
@@ -261,11 +260,11 @@ public class DailyData {
         this.temperatureMax = temperatureMax;
     }
 
-    public DateTime getTemperatureMaxTime() {
+    public Long getTemperatureMaxTime() {
         return temperatureMaxTime;
     }
 
-    public void setTemperatureMaxTime(DateTime temperatureMaxTime) {
+    public void setTemperatureMaxTime(Long temperatureMaxTime) {
         this.temperatureMaxTime = temperatureMaxTime;
     }
 
@@ -277,11 +276,11 @@ public class DailyData {
         this.apparentTempuratureMin = apparentTempuratureMin;
     }
 
-    public DateTime getApparentTemperatureMinTime() {
+    public Long getApparentTemperatureMinTime() {
         return apparentTemperatureMinTime;
     }
 
-    public void setApparentTemperatureMinTime(DateTime apparentTemperatureMinTime) {
+    public void setApparentTemperatureMinTime(Long apparentTemperatureMinTime) {
         this.apparentTemperatureMinTime = apparentTemperatureMinTime;
     }
 
@@ -293,11 +292,11 @@ public class DailyData {
         this.apparentTempuratureMax = apparentTempuratureMax;
     }
 
-    public DateTime getApparentTempuratureMaxTime() {
+    public Long getApparentTempuratureMaxTime() {
         return apparentTempuratureMaxTime;
     }
 
-    public void setApparentTempuratureMaxTime(DateTime apparentTempuratureMaxTime) {
+    public void setApparentTempuratureMaxTime(Long apparentTempuratureMaxTime) {
         this.apparentTempuratureMaxTime = apparentTempuratureMaxTime;
     }
 

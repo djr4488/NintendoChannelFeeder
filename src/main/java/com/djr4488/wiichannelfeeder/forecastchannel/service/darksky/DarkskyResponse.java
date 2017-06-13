@@ -1,15 +1,15 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Alert;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.CurrentForecast;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyForecast;
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.HourlyForecast;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Location;
 import com.djr4488.wiichannelfeeder.utils.CopyUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.ws.rs.client.Invocation;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DarkskyResponse {
@@ -92,8 +92,26 @@ public class DarkskyResponse {
             CurrentForecast currentForecast = currently.toCurrently();
             currentForecast.setLocation(location);
             location.setCurrentForecast(currentForecast);
+            DailyForecast dailyForecast = daily.toDailyForecast();
+            location.setDailyForecast(dailyForecast);
+            dailyForecast.setLocation(location);
+            HourlyForecast hourlyForecast = hourly.toHourlyForecast();
+            hourlyForecast.setLocation(location);
+            location.setHourlyForecast(hourlyForecast);
+            location.setAlert(toAlertList());
         }
         return location;
+    }
+
+    private List<Alert> toAlertList() {
+        if (null != alerts && !alerts.isEmpty()) {
+            List<Alert> alertList = new ArrayList<>(alerts.size());
+            for (Alerts alertEntry : alerts) {
+                alertList.add(alertEntry.toAlert());
+            }
+            return alertList;
+        }
+        return null;
     }
 
     @Override

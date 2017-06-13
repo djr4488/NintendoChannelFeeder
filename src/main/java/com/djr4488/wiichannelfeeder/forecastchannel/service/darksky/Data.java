@@ -1,6 +1,9 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyData;
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.HourlyData;
 import com.djr4488.wiichannelfeeder.utils.ConversionUtils;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
@@ -300,6 +303,14 @@ public class Data {
 
     public DateTime getApparentTemperatureMaxTime(String timezone) {
         return ConversionUtils.convertUnixToDateTime(getApparentTempuratureMaxTime(), timezone);
+    }
+
+    public DailyData toDailyData() {
+        return CopyUtils.copyProperties(this, new DailyData());
+    }
+
+    public HourlyData toHourlyData() {
+        return CopyUtils.copyProperties(this, new HourlyData());
     }
 
     @Override

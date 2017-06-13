@@ -1,12 +1,14 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyData;
+import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyForecast;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Daily {
     private String summary;
     private String icon;
@@ -34,6 +36,20 @@ public class Daily {
 
     public void setData(List<Data> data) {
         this.data = data;
+    }
+
+    public DailyForecast toDailyForecast() {
+        DailyForecast dailyForecast = CopyUtils.copyProperties(this, new DailyForecast());
+        dailyForecast.setData(toDailyDataList());
+        return dailyForecast;
+    }
+
+    private List<DailyData> toDailyDataList() {
+        List<DailyData> dailyDataList = new ArrayList<>(data.size());
+        for (Data dataElement : data) {
+            dailyDataList.add(dataElement.toDailyData());
+        }
+        return dailyDataList;
     }
 
     @Override

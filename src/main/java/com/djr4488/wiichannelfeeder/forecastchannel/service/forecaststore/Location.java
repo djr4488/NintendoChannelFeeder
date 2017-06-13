@@ -6,8 +6,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.List;
 
 /**
  * Created by djr4488 on 6/9/17.
@@ -31,6 +33,8 @@ public class Location extends Identifiable {
     private DailyForecast dailyForecast;
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "Location")
     private CurrentForecast currentForecast;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Location")
+    private List<Alert> alert;
 
     public String getLatitude() {
         return latitude;
@@ -94,6 +98,14 @@ public class Location extends Identifiable {
 
     public void setCurrentForecast(CurrentForecast currentForecast) {
         this.currentForecast = currentForecast;
+    }
+
+    public List<Alert> getAlert() {
+        return alert;
+    }
+
+    public void setAlert(List<Alert> alert) {
+        this.alert = alert;
     }
 
     @Override

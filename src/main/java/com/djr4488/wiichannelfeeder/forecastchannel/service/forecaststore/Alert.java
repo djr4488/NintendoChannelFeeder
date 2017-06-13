@@ -1,7 +1,13 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -9,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "alert_entries")
-public class Alerts extends Identifiable {
+public class Alert extends Identifiable {
     @Column(name = "title")
     private String title;
     @Column(name = "time")
@@ -20,6 +26,9 @@ public class Alerts extends Identifiable {
     private String description;
     @Column(name = "uri")
     private String uri;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     public String getTitle() {
         return title;
@@ -59,5 +68,18 @@ public class Alerts extends Identifiable {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

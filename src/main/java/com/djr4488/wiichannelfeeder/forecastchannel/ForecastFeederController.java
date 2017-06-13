@@ -33,7 +33,7 @@ public class ForecastFeederController {
 	private ForecastStoreService forecastStoreService;
 
 	//todo setup inject using a config service
-	private String key = "96701672aeed78de6f2dc712c9f4c33f";
+	private String key = "key";
 
 	@Schedule(second="0", minute="0/1", hour="*")
 	public void getUpdatedForecastsByRegions() {

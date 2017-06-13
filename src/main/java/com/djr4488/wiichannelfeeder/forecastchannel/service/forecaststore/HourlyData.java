@@ -2,7 +2,6 @@ package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.joda.time.DateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,7 @@ import java.math.BigDecimal;
 @Table(name = "hourly_data_entries")
 public class HourlyData {
     @Column(name = "time")
-    private DateTime time;
+    private Long time;
     @Column(name = "summary")
     private String summary;
     @Column(name = "icon")
@@ -52,11 +51,11 @@ public class HourlyData {
     @JoinColumn(name = "hourly_id")
     private HourlyForecast hourlyForecast;
 
-    public DateTime getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(DateTime time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
