@@ -3,14 +3,12 @@ package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Alerts;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyResponse;
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Data;
-import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Hourly;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
