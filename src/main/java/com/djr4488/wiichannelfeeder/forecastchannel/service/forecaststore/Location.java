@@ -1,11 +1,15 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyResponse;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -16,6 +20,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "locations")
+@NamedQueries({
+        @NamedQuery(name = "findByLatitudeAndLongitude",
+                    query = "select location from Location location where location.latitude = :latitude and location.longitude = :longitude")
+})
 public class Location extends Identifiable {
     @Column(name = "latitude")
     private String latitude;
@@ -27,14 +35,21 @@ public class Location extends Identifiable {
     private String zipCode;
     @Column(name = "timezone")
     private String timezone;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "Location")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Location")
     private HourlyForecast hourlyForecast;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "Location")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Location")
     private DailyForecast dailyForecast;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "Location")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Location")
     private CurrentForecast currentForecast;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Location")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "Location")
     private List<Alert> alert;
+
+    public Location() {
+    }
+
+    public Location(DarkskyResponse darkskyResponse) {
+        CopyUtils.copyProperties(darkskyResponse, this);
+    }
 
     public String getLatitude() {
         return latitude;

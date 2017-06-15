@@ -1,5 +1,8 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Daily;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,11 +22,18 @@ public class DailyForecast extends Identifiable {
     private String summary;
     @Column(name = "icon")
     private String icon;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "DailyForecast")
-    private List<DailyData> data;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "DailyForecast", orphanRemoval = true)
+    private List<DailyData> dailyData;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    public DailyForecast() {}
+
+    public DailyForecast(Daily daily) {
+        CopyUtils.copyProperties(daily, this);
+        dailyData = null;
+    }
 
     public String getSummary() {
         return summary;
@@ -42,11 +52,11 @@ public class DailyForecast extends Identifiable {
     }
 
     public List<DailyData> getData() {
-        return data;
+        return dailyData;
     }
 
-    public void setData(List<DailyData> data) {
-        this.data = data;
+    public void setData(List<DailyData> dailyData) {
+        this.dailyData = dailyData;
     }
 
     public Location getLocation() {

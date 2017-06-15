@@ -1,5 +1,7 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Currently;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -57,9 +59,17 @@ public class CurrentForecast extends Identifiable {
     private BigDecimal pressure;
     @Column(name = "ozone")
     private BigDecimal ozone;
-    @OneToOne(fetch = FetchType.LAZY)
+    @Column(name = "uv_index")
+    private BigDecimal uvIndex;
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    public CurrentForecast() {}
+
+    public CurrentForecast(Currently currently) {
+        CopyUtils.copyProperties(currently, this);
+    }
 
     public Long getTime() {
         return time;
@@ -219,6 +229,14 @@ public class CurrentForecast extends Identifiable {
 
     public void setOzone(BigDecimal ozone) {
         this.ozone = ozone;
+    }
+
+    public BigDecimal getUvIndex() {
+        return uvIndex;
+    }
+
+    public void setUvIndex(BigDecimal uvIndex) {
+        this.uvIndex = uvIndex;
     }
 
     public Location getLocation() {

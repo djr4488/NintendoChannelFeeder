@@ -5,10 +5,13 @@ import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
+
 /**
  * Created by djr4488 on 6/11/17.
  */
-public class Alerts {
+public class Alerts implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String title;
     private Long time;
     private Long expires;

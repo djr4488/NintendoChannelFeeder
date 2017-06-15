@@ -7,9 +7,12 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
-public class Currently {
+public class Currently implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Long time;
     private String summary;
     private String icon;
@@ -30,6 +33,7 @@ public class Currently {
     private BigDecimal cloudCover;
     private BigDecimal pressure;
     private BigDecimal ozone;
+    private BigDecimal uvIndex;
 
     public Long getTime() {
         return time;
@@ -195,9 +199,19 @@ public class Currently {
         this.ozone = ozone;
     }
 
+    public BigDecimal getUvIndex() {
+        return uvIndex;
+    }
+
+    public void setUvIndex(BigDecimal uvIndex) {
+        this.uvIndex = uvIndex;
+    }
+
     public CurrentForecast toCurrently() {
-        return CopyUtils.copyProperties(this,
-                new CurrentForecast());
+        CurrentForecast currentForecast = CopyUtils.copyProperties(this, new CurrentForecast());
+        currentForecast.setCreatedAt(DateTime.now().toDate());
+        currentForecast.setLastUpdatedAt(DateTime.now().toDate());
+        return currentForecast;
     }
 
     @Override

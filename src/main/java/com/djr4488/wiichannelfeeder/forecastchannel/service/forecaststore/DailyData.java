@@ -1,5 +1,7 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Data;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -16,7 +18,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "daily_data_entries")
-public class DailyData {
+public class DailyData extends Identifiable {
     @Column(name = "time")
     private Long time;
     @Column(name = "summary")
@@ -75,6 +77,12 @@ public class DailyData {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "daily_id")
     private DailyForecast dailyForecast;
+
+    public DailyData() {}
+
+    public DailyData(Data data) {
+        CopyUtils.copyProperties(data, this);
+    }
 
     public Long getTime() {
         return time;

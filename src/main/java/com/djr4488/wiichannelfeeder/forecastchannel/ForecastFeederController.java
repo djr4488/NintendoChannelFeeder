@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -37,9 +39,10 @@ public class ForecastFeederController {
 
 	@Schedule(second="0", minute="0/1", hour="*")
 	public void getUpdatedForecastsByRegions() {
-		log.info("getUpdateForecastByRegions() started");
-		darkskyTransport.getForecast(key, "38.881396", "-94.819128")
-				.enqueue(darkskyCallback);
+		String threadName = Thread.currentThread().getName();
+		log.info("getUpdateForecastByRegions() started threadName:{}", threadName);
+		//darkskyTransport.getForecast(key, "38.881396", "-94.819128")
+		//		.enqueue(darkskyCallback);
 	}
 
 	public File getForecastFile(String region, String file) {
@@ -48,9 +51,14 @@ public class ForecastFeederController {
 		return new File("c:/app/wiichannels/" + file);
 	}
 
-	public void darkskyResponseListener(@Observes DarkskyResponse darkskyResponse) {
-		log.debug("darkskyResponseListener() darkskyResponse:{}", darkskyResponse);
-		Location location = darkskyResponse.toLocation();
+	public void darkskyResponseHandler(DarkskyResponse darkskyResponse) {
+		String threadName = Thread.currentThread().getName();
+		log.debug("darkskyResponseListener() darkskyResponse:{}, threadName:{}", darkskyResponse, threadName);
+		try {
+			forecastStoreService.saveForecastForLocation(darkskyResponse);
+		} catch (Exception ex) {
+			log.error("darkskyResponseListener() ", ex);
+		}
 		//TODO call forecast store service to save data to database
 	}
 }

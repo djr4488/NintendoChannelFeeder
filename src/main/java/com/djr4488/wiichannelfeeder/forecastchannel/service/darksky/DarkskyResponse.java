@@ -8,11 +8,14 @@ import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Locati
 import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DarkskyResponse {
+public class DarkskyResponse implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String latitude;
     private String longitude;
     private String timezone;
@@ -84,34 +87,6 @@ public class DarkskyResponse {
 
     public void setFlags(Flags flags) {
         this.flags = flags;
-    }
-
-    public Location toLocation() {
-        Location location = CopyUtils.copyProperties(this, new Location());
-        if (null != location) {
-            CurrentForecast currentForecast = currently.toCurrently();
-            currentForecast.setLocation(location);
-            location.setCurrentForecast(currentForecast);
-            DailyForecast dailyForecast = daily.toDailyForecast();
-            location.setDailyForecast(dailyForecast);
-            dailyForecast.setLocation(location);
-            HourlyForecast hourlyForecast = hourly.toHourlyForecast();
-            hourlyForecast.setLocation(location);
-            location.setHourlyForecast(hourlyForecast);
-            location.setAlert(toAlertList());
-        }
-        return location;
-    }
-
-    private List<Alert> toAlertList() {
-        if (null != alerts && !alerts.isEmpty()) {
-            List<Alert> alertList = new ArrayList<>(alerts.size());
-            for (Alerts alertEntry : alerts) {
-                alertList.add(alertEntry.toAlert());
-            }
-            return alertList;
-        }
-        return null;
     }
 
     @Override

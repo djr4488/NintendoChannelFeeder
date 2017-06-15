@@ -1,8 +1,11 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Hourly;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,11 +25,18 @@ public class HourlyForecast extends Identifiable {
     private String summary;
     @Column(name = "icon")
     private String icon;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "HourlyForecast")
-    private List<HourlyData> data;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "HourlyForecast", orphanRemoval = true)
+    private List<HourlyData> hourlyData;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    public HourlyForecast() {}
+
+    public HourlyForecast(Hourly hourly) {
+        CopyUtils.copyProperties(hourly, this);
+        hourlyData = null;
+    }
 
     public String getSummary() {
         return summary;
@@ -45,11 +55,11 @@ public class HourlyForecast extends Identifiable {
     }
 
     public List<HourlyData> getData() {
-        return data;
+        return hourlyData;
     }
 
-    public void setData(List<HourlyData> data) {
-        this.data = data;
+    public void setData(List<HourlyData> hourlyData) {
+        this.hourlyData = hourlyData;
     }
 
     public Location getLocation() {

@@ -8,9 +8,11 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Data {
+public class Data implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Long time;
     private String summary;
     private String icon;

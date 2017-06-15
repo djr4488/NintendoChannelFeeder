@@ -1,5 +1,7 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Alerts;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -29,6 +31,12 @@ public class Alert extends Identifiable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    public Alert() {}
+
+    public Alert(Alerts alerts) {
+        CopyUtils.copyProperties(alerts, this);
+    }
 
     public String getTitle() {
         return title;

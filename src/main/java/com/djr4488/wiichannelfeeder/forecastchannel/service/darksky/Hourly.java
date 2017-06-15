@@ -6,11 +6,13 @@ import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Hourly {
+public class Hourly implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String summary;
     private String icon;
     private List<Data> data;
@@ -41,7 +43,7 @@ public class Hourly {
 
     public HourlyForecast toHourlyForecast() {
         HourlyForecast hourlyForecast = CopyUtils.copyProperties(this, new HourlyForecast());
-        hourlyForecast.setData(toHourlyDataList());
+        //hourlyForecast.setData(toHourlyDataList());
         return hourlyForecast;
     }
 

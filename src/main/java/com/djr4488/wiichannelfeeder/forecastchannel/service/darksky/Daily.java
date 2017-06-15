@@ -6,10 +6,12 @@ import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Daily {
+public class Daily implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String summary;
     private String icon;
     private List<Data> data;
@@ -40,7 +42,7 @@ public class Daily {
 
     public DailyForecast toDailyForecast() {
         DailyForecast dailyForecast = CopyUtils.copyProperties(this, new DailyForecast());
-        dailyForecast.setData(toDailyDataList());
+        //dailyForecast.setData(toDailyDataList());
         return dailyForecast;
     }
 

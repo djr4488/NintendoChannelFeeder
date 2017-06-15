@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="forecast_persistence">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/forecast</jta-data-source>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Location</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Alert</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.CurrentForecast</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyData</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyForecast</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.HourlyData</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.HourlyForecast</class>
+        <properties>
+            <property
+                    name="eclipselink.loggin.level.sql"
+                    value="FINE"/>
+            <property
+                    name="eclipselink.logging.parameters"
+                    value="true"/>
+            <property
+                    name="eclipselink.ddl-generation.output-mode"
+                    value="database"/>
+            <property
+                    name="eclipselink.ddl-generation"
+                    value="create-or-extend-tables"/>
+        </properties>
+    </persistence-unit>
+</persistence>

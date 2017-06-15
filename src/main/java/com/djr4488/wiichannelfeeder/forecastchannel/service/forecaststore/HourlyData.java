@@ -1,5 +1,7 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
+import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Data;
+import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -15,7 +17,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "hourly_data_entries")
-public class HourlyData {
+public class HourlyData extends Identifiable {
     @Column(name = "time")
     private Long time;
     @Column(name = "summary")
@@ -26,6 +28,7 @@ public class HourlyData {
     private BigDecimal precipIntensity;
     @Column(name = "precip_probability", precision = 7, scale = 3)
     private BigDecimal precipProbability;
+    @Column(name = "precip_type")
     private String precipType;
     @Column(name = "temperature", precision = 7, scale = 3)
     private BigDecimal temperature;
@@ -50,6 +53,12 @@ public class HourlyData {
     @ManyToOne
     @JoinColumn(name = "hourly_id")
     private HourlyForecast hourlyForecast;
+
+    public HourlyData() {}
+
+    public HourlyData(Data data) {
+        CopyUtils.copyProperties(data, this);
+    }
 
     public Long getTime() {
         return time;
