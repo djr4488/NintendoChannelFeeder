@@ -37,12 +37,12 @@ public class ForecastFeederController {
 	//todo setup inject using a config service
 	private String key = "key";
 
-	@Schedule(second="0", minute="0/1", hour="*")
+	@Schedule(second="0", minute="0/30", hour="*")
 	public void getUpdatedForecastsByRegions() {
 		String threadName = Thread.currentThread().getName();
 		log.info("getUpdateForecastByRegions() started threadName:{}", threadName);
-		//darkskyTransport.getForecast(key, "38.881396", "-94.819128")
-		//		.enqueue(darkskyCallback);
+		darkskyTransport.getForecast(key, "38.881396", "-94.819128")
+				.enqueue(darkskyCallback);
 	}
 
 	public File getForecastFile(String region, String file) {
