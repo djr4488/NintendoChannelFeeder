@@ -1,17 +1,9 @@
 package com.djr4488.wiichannelfeeder.forecastchannel.service.darksky;
 
-import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Alert;
-import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.CurrentForecast;
-import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyForecast;
-import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.HourlyForecast;
-import com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Location;
-import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DarkskyResponse implements Serializable {
@@ -24,6 +16,7 @@ public class DarkskyResponse implements Serializable {
     private Daily daily;
     private List<Alerts> alerts;
     private Flags flags;
+    private String regionCode;
 
     public String getLatitude() {
         return latitude;
@@ -87,6 +80,14 @@ public class DarkskyResponse implements Serializable {
 
     public void setFlags(Flags flags) {
         this.flags = flags;
+    }
+
+    public String getRegionCode() {
+        return regionCode;
+    }
+
+    public void setRegionCode(String regionCode) {
+        this.regionCode = regionCode;
     }
 
     @Override

@@ -11,10 +11,11 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by djr4488 on 6/9/17.
@@ -26,71 +27,106 @@ public class ForecastStoreService {
     private EntityManager em;
     @Inject
     private Logger log;
+
+    public List<RegionalForecast> getRegions() {
+        TypedQuery<RegionalForecast> regionQuery = em.createNamedQuery("findRegions", RegionalForecast.class);
+        return regionQuery.getResultList();
+    }
+
+    public RegionalForecast getRegion(String regionCode) {
+        TypedQuery<RegionalForecast> regionQuery = em.createNamedQuery("findRegionByRegionCode", RegionalForecast.class);
+        regionQuery.setParameter("regionCode", regionCode);
+        return regionQuery.getSingleResult();
+    }
     
-    public void saveForecastForLocation(DarkskyResponse darkskyResponse) {
-        log.debug("saveForecastForLocation() darkskyResponse:{}", darkskyResponse);
-        try {
-            Location location = storeLocation(darkskyResponse);
-            storeCurrentForecast(darkskyResponse, location);
-            storeDailyForecast(darkskyResponse, location);
-            storeHourlyForecast(darkskyResponse, location);
-            storeAlerts(darkskyResponse, location);
-        } catch (NullPointerException npEx) {
-            log.error("saveForecastForLocation() ", npEx);
-            throw npEx;
+    public Forecast saveForecastForLocation(DarkskyResponse darkskyResponse, RegionalForecast regionalForecast) {
+        log.debug("saveForecastForLocation() darkskyResponse:{}, location:{}, city:{}", darkskyResponse, regionalForecast);
+        return storeForecast(darkskyResponse, regionalForecast);
+    }
+
+    public void saveForecastDataPoints(DarkskyResponse darkskyResponse, Forecast forecast) {
+        storeCurrentForecast(darkskyResponse, forecast);
+        storeDailyForecast(darkskyResponse, forecast);
+        storeHourlyForecast(darkskyResponse, forecast);
+        storeAlerts(darkskyResponse, forecast);
+    }
+
+    public void deleteExistingForecastsForRegion(RegionalForecast regionalForecast) {
+//        TypedQuery<Forecast> forecastsQuery = em.createNamedQuery("findForecastsByRegion", Forecast.class);
+//        forecastsQuery.setParameter("region", regionalForecast);
+//        List<Forecast> forecasts = forecastsQuery.getResultList();
+//        for (Forecast forecast : forecasts) {
+//            deleteCurrentForecast(forecast);
+//            deleteHourlyForecast(forecast);
+//            deleteDailyForecast(forecast);
+//            deleteAlerts(forecast);
+//            em.remove(forecast);
+//        };
+        em.refresh(regionalForecast);
+        List<Forecast> forecastsInRegion = regionalForecast.getForecast();
+        for (Forecast forecast : forecastsInRegion) {
+            em.remove(forecast);
+        }
+        regionalForecast.getForecast().clear();
+        em.flush();
+    }
+
+    private void deleteCurrentForecast(Forecast forecast) {
+        em.remove(forecast.getCurrentForecast());
+    }
+
+    private void deleteHourlyForecast(Forecast forecast) {
+        for (HourlyData hourlyData : forecast.getHourlyForecast().getData()) {
+            em.remove(hourlyData);
+        }
+        em.remove(forecast.getHourlyForecast());
+    }
+
+    private void deleteDailyForecast(Forecast forecast) {
+        for (DailyData dailyData : forecast.getDailyForecast().getData()) {
+            em.remove(dailyData);
+        }
+        em.remove(forecast.getDailyForecast());
+    }
+
+    private void deleteAlerts(Forecast forecast) {
+        for (Alert alert : forecast.getAlert()) {
+            em.remove(alert);
         }
     }
 
-    private Location storeLocation(DarkskyResponse darkskyResponse) {
+    private Forecast storeForecast(DarkskyResponse darkskyResponse, RegionalForecast regionalForecast) {
         log.debug("storeLocation() darkskyResponse:{}", darkskyResponse);
-        TypedQuery<Location> locationQuery = em.createNamedQuery("findByLatitudeAndLongitude", Location.class);
-        locationQuery.setParameter("latitude", darkskyResponse.getLatitude());
-        locationQuery.setParameter("longitude", darkskyResponse.getLongitude());
-        Location location = null;
-        try {
-            location = locationQuery.getSingleResult();
-            setCreatedAndLastUpdateAtDates(location);
-            em.remove(location.getDailyForecast());
-            location.setDailyForecast(null);
-            em.remove(location.getHourlyForecast());
-            location.setHourlyForecast(null);
-            if (null != location.getAlert()) {
-                for (Alert alert : location.getAlert()) {
-                    em.remove(alert);
-                }
-                location.setAlert(null);
-            }
-            em.remove(location.getCurrentForecast());
-            location.setCurrentForecast(null);
-            em.flush();
-        } catch (NoResultException nrEx) {
-            location = new Location(darkskyResponse);
-            setCreatedAndLastUpdateAtDates(location);
-            em.persist(location);
-            em.flush();
-        }
-        return location;
+        Forecast forecast = new Forecast(darkskyResponse, regionalForecast);
+        em.persist(forecast);
+        regionalForecast.getForecast().add(forecast);
+        em.flush();
+        return forecast;
     }
 
-    private void storeAlerts(DarkskyResponse darkskyResponse, Location location) {
+    private void storeAlerts(DarkskyResponse darkskyResponse, Forecast location) {
         if (null != darkskyResponse.getAlerts()) {
             log.debug("storeAlerts() darkskyAlerts:{}, location:{}", darkskyResponse.getAlerts().size(), location);
+            List<Alert> alerts = new ArrayList<>(darkskyResponse.getAlerts().size());
             for (Alerts alertData : darkskyResponse.getAlerts()) {
                 Alert alert = new Alert(alertData);
-                alert.setLocation(location);
+                alert.setForecast(location);
                 setCreatedAndLastUpdateAtDates(alert);
                 em.persist(alert);
                 em.flush();
+                alerts.add(alert);
             }
+            location.setAlert(alerts);
+            em.flush();
         } else {
             log.trace("storeAlerts() no alerts to store");
         }
     }
 
-    private void storeHourlyForecast(DarkskyResponse darkskyResponse, Location location) {
+    private void storeHourlyForecast(DarkskyResponse darkskyResponse, Forecast location) {
         log.debug("storeHourlyForecast() darkskyResponseHourly:{}, location:{}", darkskyResponse.getHourly(), location);
         HourlyForecast hourlyForecast = new HourlyForecast(darkskyResponse.getHourly());
-        hourlyForecast.setLocation(location);
+        hourlyForecast.setForecast(location);
         setCreatedAndLastUpdateAtDates(hourlyForecast);
         em.persist(hourlyForecast);
         em.flush();
@@ -103,10 +139,10 @@ public class ForecastStoreService {
         }
     }
 
-    private void storeDailyForecast(DarkskyResponse darkskyResponse, Location location) {
+    private void storeDailyForecast(DarkskyResponse darkskyResponse, Forecast location) {
         log.debug("storeDailyForecast() darkskyDailyForecast:{}, location:{}", darkskyResponse.getDaily(), location);
         DailyForecast dailyForecast = new DailyForecast(darkskyResponse.getDaily());
-        dailyForecast.setLocation(location);
+        dailyForecast.setForecast(location);
         setCreatedAndLastUpdateAtDates(dailyForecast);
         em.persist(dailyForecast);
         em.flush();
@@ -119,10 +155,10 @@ public class ForecastStoreService {
         }
     }
 
-    private void storeCurrentForecast(DarkskyResponse darkskyResponse, Location location) {
+    private void storeCurrentForecast(DarkskyResponse darkskyResponse, Forecast location) {
         log.debug("storeCurrentForecast() darkskyCurrentForecast:{}, location:{}", darkskyResponse.getCurrently(), location);
         CurrentForecast currentForecast = new CurrentForecast(darkskyResponse.getCurrently());
-        currentForecast.setLocation(location);
+        currentForecast.setForecast(location);
         setCreatedAndLastUpdateAtDates(currentForecast);
         em.persist(currentForecast);
         em.flush();
@@ -130,7 +166,7 @@ public class ForecastStoreService {
 
     public <T extends Identifiable> void setCreatedAndLastUpdateAtDates(T entity) {
         Date date = DateTime.now().toDate();
-        if (!(entity instanceof Location) || null == entity.getId()) {
+        if (!(entity instanceof Forecast) || null == entity.getId()) {
             entity.setCreatedAt(date);
         }
         entity.setLastUpdatedAt(date);

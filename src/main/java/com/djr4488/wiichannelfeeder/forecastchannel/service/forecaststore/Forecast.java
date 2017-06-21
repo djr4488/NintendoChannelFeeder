@@ -4,83 +4,71 @@ import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.DarkskyRespo
 import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.eclipse.persistence.annotations.DeleteAll;
+import org.joda.time.DateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by djr4488 on 6/9/17.
  */
 @Entity
-@Table(name = "locations")
+@Table(name = "forecasts")
 @NamedQueries({
-        @NamedQuery(name = "findByLatitudeAndLongitude",
-                    query = "select location from Location location where location.latitude = :latitude and location.longitude = :longitude")
+        @NamedQuery(name = "findForecastsByRegion",
+            query = "select forecast from Forecast forecast where forecast.regionalForecast = :region"),
+        @NamedQuery(name = "deleteForecastsByRegion",
+            query = "delete from Forecast forecast where forecast.regionalForecast = :region")
 })
-public class Location extends Identifiable {
-    @Column(name = "latitude")
-    private String latitude;
-    @Column(name = "longitude")
-    private String longitude;
-    @Column(name = "city")
-    private String city;
-    @Column(name = "zipcode", length = 5)
-    private String zipCode;
+public class Forecast extends Identifiable {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    private RegionalForecast regionalForecast;
     @Column(name = "timezone")
     private String timezone;
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Location")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Forecast", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @DeleteAll
     private HourlyForecast hourlyForecast;
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Location")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Forecast", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @DeleteAll
     private DailyForecast dailyForecast;
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Location")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "Forecast", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @DeleteAll
     private CurrentForecast currentForecast;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "Location")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "Forecast", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @DeleteAll
     private List<Alert> alert;
 
-    public Location() {
+    public Forecast() {
     }
 
-    public Location(DarkskyResponse darkskyResponse) {
+    public Forecast(DarkskyResponse darkskyResponse, RegionalForecast regionalForecast) {
         CopyUtils.copyProperties(darkskyResponse, this);
+        this.regionalForecast = regionalForecast;
+        Date now = DateTime.now().toDate();
+        this.setCreatedAt(now);
+        this.setLastUpdatedAt(now);
     }
 
-    public String getLatitude() {
-        return latitude;
+    public RegionalForecast getRegionalForecast() {
+        return regionalForecast;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setRegionalForecast(RegionalForecast regionalForecast) {
+        this.regionalForecast = regionalForecast;
     }
 
     public String getTimezone() {

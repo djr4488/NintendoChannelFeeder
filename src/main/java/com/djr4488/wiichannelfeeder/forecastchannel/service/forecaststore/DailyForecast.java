@@ -2,7 +2,10 @@ package com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore;
 
 import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Daily;
 import com.djr4488.wiichannelfeeder.utils.CopyUtils;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.eclipse.persistence.annotations.DeleteAll;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,16 +20,18 @@ import java.util.List;
  */
 @Entity
 @Table(name = "daily_forecasts")
+@CascadeOnDelete
 public class DailyForecast extends Identifiable {
     @Column(name = "summary")
     private String summary;
     @Column(name = "icon")
     private String icon;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "DailyForecast", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "DailyForecast", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @DeleteAll
     private List<DailyData> dailyData;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @JoinColumn(name = "forecast_id", referencedColumnName = "id")
+    private Forecast forecast;
 
     public DailyForecast() {}
 
@@ -59,11 +64,11 @@ public class DailyForecast extends Identifiable {
         this.dailyData = dailyData;
     }
 
-    public Location getLocation() {
-        return location;
+    public Forecast getForecast() {
+        return forecast;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setForecast(Forecast forecast) {
+        this.forecast = forecast;
     }
 }

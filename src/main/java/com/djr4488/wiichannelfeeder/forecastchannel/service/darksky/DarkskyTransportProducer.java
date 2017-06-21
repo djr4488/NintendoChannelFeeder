@@ -22,7 +22,7 @@ public class DarkskyTransportProducer {
 
     @Produces
     public DarkskyTransport getDarkskyTransport() {
-        return TransportProducer.getTransport(DarkskyTransport.class, getObjectMapper(), baseUrl);
+        return TransportProducer.getTransport(DarkskyTransport.class, getObjectMapper(), baseUrl, null);
     }
 
     private ObjectMapper getObjectMapper() {

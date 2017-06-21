@@ -4,11 +4,14 @@ import com.djr4488.wiichannelfeeder.forecastchannel.service.darksky.Hourly;
 import com.djr4488.wiichannelfeeder.utils.CopyUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.eclipse.persistence.annotations.DeleteAll;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -20,16 +23,18 @@ import java.util.List;
  */
 @Entity
 @Table(name = "hourly_forecasts")
+@CascadeOnDelete
 public class HourlyForecast extends Identifiable {
     @Column(name = "summary")
     private String summary;
     @Column(name = "icon")
     private String icon;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "HourlyForecast", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "HourlyForecast", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @DeleteAll
     private List<HourlyData> hourlyData;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @JoinColumn(name = "forecast_id", referencedColumnName = "id")
+    private Forecast forecast;
 
     public HourlyForecast() {}
 
@@ -62,12 +67,12 @@ public class HourlyForecast extends Identifiable {
         this.hourlyData = hourlyData;
     }
 
-    public Location getLocation() {
-        return location;
+    public Forecast getForecast() {
+        return forecast;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setForecast(Forecast forecast) {
+        this.forecast = forecast;
     }
 
     @Override

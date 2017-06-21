@@ -27,7 +27,7 @@ public class ForecastListener implements MessageListener {
     public void onMessage(Message message) {
         try {
             DarkskyResponse darkskyResponse = (DarkskyResponse)((ObjectMessage)message).getObject();
-            forecastStoreService.saveForecastForLocation(darkskyResponse);
+            //forecastStoreService.saveForecastForLocation(darkskyResponse, null, null);
         } catch (Exception ex) {
             log.error("onMessage() ", ex);
         }

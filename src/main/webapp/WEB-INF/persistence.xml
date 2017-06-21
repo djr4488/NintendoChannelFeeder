@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+<persistence  xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+              version="2.1">
     <persistence-unit name="forecast_persistence">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>jdbc/forecast</jta-data-source>
-        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Location</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.RegionalForecast</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.City</class>
+        <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Forecast</class>
         <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.Alert</class>
         <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.CurrentForecast</class>
         <class>com.djr4488.wiichannelfeeder.forecastchannel.service.forecaststore.DailyData</class>

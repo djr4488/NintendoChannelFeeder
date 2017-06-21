@@ -26,11 +26,13 @@ public class Alert extends Identifiable {
     private Long expires;
     @Column(name = "description", columnDefinition = "BLOB")
     private String description;
+    @Column(name = "severity")
+    private String severity;
     @Column(name = "uri")
     private String uri;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @JoinColumn(name = "forecast_id")
+    private Forecast forecast;
 
     public Alert() {}
 
@@ -78,12 +80,20 @@ public class Alert extends Identifiable {
         this.uri = uri;
     }
 
-    public Location getLocation() {
-        return location;
+    public String getSeverity() {
+        return severity;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+
+    public Forecast getForecast() {
+        return forecast;
+    }
+
+    public void setForecast(Forecast forecast) {
+        this.forecast = forecast;
     }
 
     @Override

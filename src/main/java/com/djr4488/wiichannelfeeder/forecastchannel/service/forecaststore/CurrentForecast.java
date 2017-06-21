@@ -61,9 +61,9 @@ public class CurrentForecast extends Identifiable {
     private BigDecimal ozone;
     @Column(name = "uv_index")
     private BigDecimal uvIndex;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "forecast_id")
+    private Forecast forecast;
 
     public CurrentForecast() {}
 
@@ -239,12 +239,12 @@ public class CurrentForecast extends Identifiable {
         this.uvIndex = uvIndex;
     }
 
-    public Location getLocation() {
-        return location;
+    public Forecast getForecast() {
+        return forecast;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setForecast(Forecast forecast) {
+        this.forecast = forecast;
     }
 
     @Override

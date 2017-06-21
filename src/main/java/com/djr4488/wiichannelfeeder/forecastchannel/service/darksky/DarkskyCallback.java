@@ -29,36 +29,39 @@ public class DarkskyCallback implements ErrorHandlingCallback<DarkskyResponse> {
     private ConnectionFactory connectionFactory;
     @Resource(name = "jms/ForecastJMSQueue")
     private Queue forecastQueue;
+    @Inject
+    private Event<Response<DarkskyResponse>> darkskyResponseEvent;
 
     public DarkskyCallback() {}
 
     @Override
     public void success(Response<DarkskyResponse> response) {
         log.debug("success() firing event for response:{} and body:{}", response, response.body());
-        Connection connection = null;
-        Session session = null;
-        try {
-            connection = connectionFactory.createConnection();
-            connection.start();
-            session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-            MessageProducer messageProducer = session.createProducer(forecastQueue);
-            messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
-            ObjectMessage message = session.createObjectMessage(response.body());
-            messageProducer.send(message);
-        } catch (Exception ex) {
-            log.error("success() failed sending message", ex);
-        } finally {
-            try {
-                if (null != session) {
-                    session.close();
-                }
-                if (null != connection) {
-                    connection.close();
-                }
-            } catch (Exception ex) {
-
-            }
-        }
+        darkskyResponseEvent.fire(response);
+//        Connection connection = null;
+//        Session session = null;
+//        try {
+//            connection = connectionFactory.createConnection();
+//            connection.start();
+//            session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+//            MessageProducer messageProducer = session.createProducer(forecastQueue);
+//            messageProducer.setDeliveryMode(DeliveryMode.PERSISTENT);
+//            ObjectMessage message = session.createObjectMessage(response.body());
+//            messageProducer.send(message);
+//        } catch (Exception ex) {
+//            log.error("success() failed sending message", ex);
+//        } finally {
+//            try {
+//                if (null != session) {
+//                    session.close();
+//                }
+//                if (null != connection) {
+//                    connection.close();
+//                }
+//            } catch (Exception ex) {
+//
+//            }
+//        }
     }
 
     @Override
