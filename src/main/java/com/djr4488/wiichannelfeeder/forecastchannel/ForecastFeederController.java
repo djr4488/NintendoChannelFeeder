@@ -39,7 +39,7 @@ public class ForecastFeederController {
 	private Event<DarkskyResponse> darkskyResponseBus;
 
 	//todo setup inject using a config service
-	private String key = "e6cac8762cfab1b0d521b1f08c373c87";
+	private String key = "key";
 
 	@Schedule(second="0", minute="0/1", hour="*")
 	public void getUpdatedForecastsByRegions() {
